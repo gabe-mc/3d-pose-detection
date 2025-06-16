@@ -4,7 +4,7 @@
 
 import numpy as np
 
-def draw_3d_skeleton(point_pairs, ax):
+def draw_3d_skeleton(point_pairs, ax, ground_offset):
     ax.cla()
     IMG_W, IMG_H, IMG_Y = 1920, 1080, 1500
 
@@ -23,8 +23,8 @@ def draw_3d_skeleton(point_pairs, ax):
         if x_img == 0.0 and z_img == 0.0:
             coords3d.append(None)
         else:
-            x = abs((x_img / IMG_W) - 1)
-            z = 1 - (z_img / IMG_H)
+            x = (x_img / IMG_W)
+            z = ((z_img - ground_offset) / IMG_H) + 1
             y = 0.5 - (y_img / IMG_Y)
             coords3d.append((x, y, z))
 
@@ -34,6 +34,7 @@ def draw_3d_skeleton(point_pairs, ax):
     zs = [c[2] for c in coords3d if c is not None]
 
     ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.set_zlim(0, 1)
+    ax.invert_zaxis()  # Flips the Z-axis so 0 is at the bottom and 1 is at the top
     ax.set_xlabel('X'); ax.set_ylabel('Y'); ax.set_zlabel('Z')
 
     # Draw joints

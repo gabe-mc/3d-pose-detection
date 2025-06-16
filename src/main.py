@@ -9,7 +9,7 @@ from visualization import draw_3d_skeleton
 
 if __name__ == "__main__":
     
-    model = YOLO('models/yolo11n-pose.pt')
+    model = YOLO('models/yolo11s-pose.pt')
 
     # cap = cv2.VideoCapture(0)
     cap = cv2.VideoCapture("videos/full_body_motion_4.mp4")
@@ -21,6 +21,8 @@ if __name__ == "__main__":
 
 
     captured_lengths = []
+    ground_offset = 0
+    captured = False
     while True:
         ret, frame = cap.read()
         if not ret:
@@ -48,10 +50,15 @@ if __name__ == "__main__":
                     iterations += 1
                 else:
                     normalize_keypoints(kps, prev_kpts)
+                    
 
                 prev_kpts = kps
                 keypoints = kps.tolist()
-                
+
+                if not captured: # First frame
+                    ground_offset = keypoints[15][1]
+                    
+
                 # We need to pad the y value of each point
                 for i in range(len(keypoints)):
                     keypoints[i] += [0.5]
@@ -60,14 +67,14 @@ if __name__ == "__main__":
                     for i in range(0, len(kps)):
                         keypoints[i][2] = extrapolate_y(i, keypoints, captured_lengths)
                 
-                draw_3d_skeleton(keypoints, ax)
+                draw_3d_skeleton(keypoints, ax, ground_offset)
 
                 plt.draw()
                 plt.pause(0.01)
         
         cv2.imshow("Video", frame)
 
-        captured = False
+        
         key = cv2.waitKey(1) & 0xFF
         if key == ord('q'):
             break

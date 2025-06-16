@@ -28,7 +28,7 @@ def extrapolate_y(index: int, xz_pairs: list[tuple], default_lengths: list[list]
         bone_length = default_lengths[index] # This will get the hypotenuse for the 2D right triangle
         y_dim = math.sqrt(max(50, bone_length**2 - (x2-x1)**2 - (z2-z1)**2)) # This will get the 3D Y dimension
 
-        bound_forearm_angle(index, xz_pairs) # Fix any errors in the forearm angles
+        # bound_forearm_angle(index, xz_pairs) # Fix any errors in the forearm angles
 
         return y_dim
         
@@ -65,7 +65,9 @@ def extrapolate_y(index: int, xz_pairs: list[tuple], default_lengths: list[list]
         
         y_dim = math.sqrt(max(50, bone_length**2 - (x2-x1)**2 - (z2-z1)**2)) # This will get the 3D Y dimension
         
-        return y_dim - 2
+        y_dim = bound_calf_angle(index, xz_pairs, y_dim)
+        
+        return y_dim
     
     else:
         return 0.5
@@ -90,6 +92,22 @@ def bound_forearm_angle(index: int, keypoints: list[list]):
             keypoints[index][2] = elbow_vector[1] * math.tan(math.radians(angle_shoulder))
 
         return None
+
+def bound_calf_angle(index: int, keypoints: list[list], extrapolated_y: float):
+        """We are checking the x component of the line segment, and if the y component of the calf is greater 
+        than the y component of the quad, then we have an overstreched bone"""
+        x1, z1, y1 = keypoints[index] # Foot
+        x2, z2, y2 = keypoints[index - 2] # Knee
+        x3, z3, y3 = keypoints[index - 4] # Hip
+
+        knee_angle_dimension = y2 - y3
+        foot_angle_dimension = extrapolated_y - y2
+        
+        if foot_angle_dimension > knee_angle_dimension: # Overstreched
+            extrapolated_y = y2
+            print("Hit this case!")
+        return extrapolated_y
+        
 
 
 def normalize_keypoints(curr: list[float], prev: list[float], tolerance: float=0.01)-> list[float]:
