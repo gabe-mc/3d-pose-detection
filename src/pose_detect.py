@@ -1,7 +1,6 @@
 """Use YOLO to detect poses and extrapolate 3D data from there."""
 
 import math
-import time 
 
 def compute_length(index: int, xz_pairs: list[list]):
     x1, z1 = xz_pairs[index]
@@ -40,7 +39,7 @@ def extrapolate_y(index: int, xz_pairs: list[tuple], default_lengths: list[list]
         bone_length = default_lengths[index] # This will get the hypotenuse for the 2D right triangle
         y_dim = math.sqrt(max(50, bone_length**2 - (x2-x1)**2 - (z2-z1)**2)) # This will get the 3D Y dimension
         
-        return y_dim - 50
+        return y_dim - 35
 
     # Leave others as default
 
@@ -105,7 +104,7 @@ def bound_calf_angle(index: int, keypoints: list[list], extrapolated_y: float):
         
         if foot_angle_dimension > knee_angle_dimension: # Overstreched
             extrapolated_y = y2
-            print("Hit this case!")
+
         return extrapolated_y
         
 

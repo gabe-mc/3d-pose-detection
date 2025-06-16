@@ -9,7 +9,7 @@ from visualization import draw_3d_skeleton
 
 if __name__ == "__main__":
     
-    model = YOLO('models/yolo11s-pose.pt')
+    model = YOLO('models/yolo11m-pose.pt')
 
     # cap = cv2.VideoCapture(0)
     cap = cv2.VideoCapture("videos/full_body_motion_4.mp4")
