@@ -135,3 +135,24 @@ def normalize_keypoints(curr: list[float], prev: list[float], tolerance: float=0
                     Exception("ERROR! Could not reorder properly")
 
     return None
+
+def maintain_ground_level(default_kps: list[float], curr_kps: list[float], tolerance: int=20)-> list[float]:
+    """This function doesnt allow both feet to leave the ground at the same time. 
+    Instead, the domanant leg (the one that is higher) is allowed to lift, while the 
+    non-dominant leg is reset to rest position."""
+
+    # print((curr_kps[15][0] + curr_kps[15][1]) - (default_kps[15][0] + default_kps[15][1]))
+    if abs((curr_kps[15][0] + curr_kps[15][1]) - (default_kps[15][0] + default_kps[15][1])) > tolerance: # Right leg is lifted
+        print("Right leg raised")
+        # Now we normalize:
+        if curr_kps[15][1] > curr_kps[16][1]: # Left leg is supposed to be lifted
+            print("MOVING LEG BACK TO DEFAULT")
+            
+            curr_kps[15][0] = default_kps[15][0]
+            curr_kps[15][1] = default_kps[15][1]
+        else: # Right leg is supposed to be lifted
+            
+            curr_kps[16][0] = default_kps[16][0]
+            curr_kps[16][1] = default_kps[16][1]
+    
+    return curr_kps

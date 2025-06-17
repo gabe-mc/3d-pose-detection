@@ -38,8 +38,8 @@ def draw_3d_skeleton(point_pairs, ax, ground_offset):
     ax.set_xlabel('X'); ax.set_ylabel('Y'); ax.set_zlabel('Z')
 
     # Draw joints
-    if coords3d[11] is not None:
-        x8, y8, z8 = coords3d[12]
+    if coords3d[14] is not None:
+        x8, y8, z8 = coords3d[15]
         ax.scatter(x8, y8, z8, s=15)
 
     # Draw bones
