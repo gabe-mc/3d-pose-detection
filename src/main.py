@@ -9,7 +9,7 @@ from visualization import draw_3d_skeleton
 
 if __name__ == "__main__":
     
-    model = YOLO('models/yolo11s-pose.pt')
+    model = YOLO('models/yolo11n-pose.pt')
 
     # cap = cv2.VideoCapture(0)
     cap = cv2.VideoCapture("videos/full_body_motion_4.mp4")
@@ -47,20 +47,11 @@ if __name__ == "__main__":
                 # 2. Call different bone extractions to get y dimension
                 # 3. Call 3D draw with X,Y,Z passed in
                 
-                keypoints = kps.tolist()
-
-                if iterations == 0:
-                    prev_kpts = kps
-                    iterations += 1
-                else:
-                    # normalize_keypoints(kps, prev_kpts) # Not currently being used (smoothing)
-                    keypoints = maintain_ground_level(ground_offset, keypoints) # Leg normalization
-                    
+                keypoints = kps.tolist()      
 
                 if not captured: # First frame
                     ground_offset = keypoints
-                    
-
+        
                 # We need to pad the y value of each point
                 for i in range(len(keypoints)):
                     keypoints[i] += [0.5]
@@ -68,7 +59,10 @@ if __name__ == "__main__":
                 if len(default_lengths) != 0:
                     for i in range(0, len(kps)):
                         keypoints[i][2] = extrapolate_y(i, keypoints, default_lengths)
-                
+            
+                if captured:
+                    keypoints = maintain_ground_level(ground_offset, keypoints) # Leg normalization
+
                 draw_3d_skeleton(keypoints, ax, ground_offset[15][1])
 
                 plt.draw()

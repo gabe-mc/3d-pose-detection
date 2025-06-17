@@ -59,10 +59,16 @@ def extrapolate_y(index: int, xz_pairs: list[tuple], default_lengths: list[list]
     if index == 15 or index == 16:
         x1, z1, y1 = xz_pairs[index]
         x2, z2, y1 = xz_pairs[index - 2]
-        
         bone_length = default_lengths[index]
-        
-        y_dim = math.sqrt(max(50, bone_length**2 - (x2-x1)**2 - (z2-z1)**2)) # This will get the 3D Y dimension
+
+        radicand = bone_length**2 - (x2-x1)**2 - (z2-z1)**2
+
+        sign = 1    
+        if radicand < 0:
+            radicand = radicand * -1
+            sign = -1
+
+        y_dim = math.sqrt(radicand) * sign # This will get the 3D Y dimension
         
         y_dim = bound_calf_angle(index, xz_pairs, y_dim)
         
@@ -150,9 +156,16 @@ def maintain_ground_level(default_kps: list[float], curr_kps: list[float], toler
             
             curr_kps[15][0] = default_kps[15][0]
             curr_kps[15][1] = default_kps[15][1]
+            curr_kps[15][2] = default_kps[15][2]
+
+            curr_kps[13][2] = default_kps[13][2] + 2
+
         else: # Right leg is supposed to be lifted
             
             curr_kps[16][0] = default_kps[16][0]
             curr_kps[16][1] = default_kps[16][1]
+            curr_kps[16][2] = default_kps[16][2]
+
+            curr_kps[14][2] = default_kps[14][2] + 2
     
     return curr_kps
