@@ -11,6 +11,35 @@
 [![License](https://img.shields.io/github/license/gabe-mc/3d-pose-detection?color=ff64da)](https://github.com/gabe-mc/3d-pose-detection/blob/main/LICENSE)
 
 
-# Table of Contents
+YOLO-3D is an extension of the 2D Ultralytics [YOLO pose model](https://docs.ultralytics.com/tasks/pose/), lifting the pose output of YOLO to a third dimension though vector computations, thus requiring neglagble extra compute on top of YOLO. The resulting model allows for 3D motion capture in real time on a sufficiently performant CPU, when using YOLO's nano pose model.
+
+## Overview
+
+**YOLO-3D** extends 2D skeleton output from YOLO by inferring a third spatial dimension using geometric constraints. Assuming that human bone lengths remain constant over time, the model uses this consistency to reconstruct the Z-dimension. Specifically, when a bone appears shorter in 2D due to foreshortening, the depth component `y` can be extrapolated using the relation:
+
+$$
+y = \sqrt{l^2 - x^2}
+$$
+
+where:  
+- `l` is the true (3D) bone length established from an initial calibration  
+- `x` is the observed 2D length  
+- `y` is the inferred depth offset required to preserve length `l` in 3D space
+
+The model requires a **calibration pose** — a frame captured with the subject in a known, approximately flat or neutral body position. This frame is used to calculate default bone lengths and define the ground level. Once this initial calibration is complete, 3D projection can be performed in real-time.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/8bb135a1-e242-4013-b487-dd19c2592858" width="500" alt="running-demo" />
+</p>
+
+Real-time inference is achievable on CPU using the lightweight YOLO11n model. To mitigate noise and jitter from the reduced model size, several normalization and smoothing functions are applied.
+
+
+# Performance
+
+
+# Usage
+
+# Limitations and Next Steps
 
 
