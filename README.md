@@ -9,7 +9,6 @@
 ![Repo created](https://img.shields.io/badge/repo%20created-June%2016%2C%202025-ff64da)
 [![GitHub last commit](https://img.shields.io/github/last-commit/gabe-mc/3d-pose-detection)](https://github.com/gabe-mc/3d-pose-detection/commits)
 [![License](https://img.shields.io/github/license/gabe-mc/3d-pose-detection?color=ff64da)](https://github.com/gabe-mc/3d-pose-detection/blob/main/LICENSE)
-[![LinkedIn](https://custom-icon-badges.demolab.com/badge/LinkedIn-3ebeee?logo=linkedin-white&logoColor=fff)](https://www.linkedin.com/in/gabrielmcfadyen/)
 
 
 # Table of Contents
