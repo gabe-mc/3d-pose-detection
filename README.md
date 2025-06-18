@@ -29,7 +29,7 @@ where:
 The model requires a **calibration pose** — a frame captured with the subject in a known, approximately flat or neutral body position. This frame is used to calculate default bone lengths and define the ground level. Once this initial calibration is complete, 3D projection can be performed in real-time.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/8bb135a1-e242-4013-b487-dd19c2592858" width="500" alt="running-demo" />
+  <img src="https://github.com/user-attachments/assets/8bb135a1-e242-4013-b487-dd19c2592858" width="400" alt="running-demo" />
 </p>
 
 Real-time inference is achievable on CPU using the lightweight YOLO11n model. To mitigate noise and jitter from the reduced model size, several normalization and smoothing functions are applied.
