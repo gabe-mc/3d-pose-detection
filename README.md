@@ -35,11 +35,61 @@ The model requires a **calibration pose** — a frame captured with the subject 
 Real-time inference is achievable on CPU using the lightweight YOLO11n model. To mitigate noise and jitter from the reduced model size, several normalization and smoothing functions are applied.
 
 
-# Performance
+## Performance
 
+Thorough testing is still needed to evaluate performance across various devices. Below is the current benchmark data with YOLO11n Nano:
 
-# Usage
+| Device               | FPS  |
+|----------------------|--------------------|
+| MacBook Pro M1 Max (CPU) | 16 FPS         |
 
-# Limitations and Next Steps
+## Usage
+
+To use YOLO-3D locally, follow these steps:
+
+### 1. Clone the Repository
+
+Fork the repository to your own account and then clone it to your local machine:
+
+```bash
+git clone https://github.com/your-username/yolo-3d.git
+cd yolo-3d
+```
+
+### 2. Install Dependencies
+
+Install the required Python packages listed in `requirements.txt`:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Choose input source
+
+To use YOLO-3D in real-time, ensure that at the top of `main.py` you have chosen `model = YOLO('models/yolo11n-pose.pt')` and have `cap = cv2.VideoCapture(0)`. 
+
+If you would like to draw from a prerecorded source, instead set `cap = cv2.VideoCapture("path_to_your_video/your_video_here.mp4")` ensuring your video is in mp4 format. 
+
+While YOLO11n (nano) is recommended for real-time processing, you’re welcome to experiment with the small (s) or medium (m) models for prerecorded videos. Keep in mind that performance improvements tend to plateau beyond the medium model size.
+
+### 4. Run the Model
+
+After setup, you're ready to run YOLO-3D. From the project root directory, run:
+
+```bash
+python src/main.py
+```
+
+This will launch a 3D visualization window using Matplotlib, along with a playback window of your input video through OpenCV.
+
+## Limitations and Next Steps
+
+There is still significant work needed to refine this model for deployment. Key issues that require attention include:
+
+1. Backward leg movement is jittery and needs improved tolerance parameters.
+2. Jumping is not supported, as the model assumes at least one leg remains fixed to ground level.
+3. Calf bone lengths are inconsistent due to the current ground normalization process.
+
+Overall, distinguishing between forward and backward movement is the main source of error in this project and will likely require further research and potentially new techniques to resolve.
 
 
